@@ -3,11 +3,11 @@ import java.util.Random;
 import java.util.Scanner;
 
 /**
-<strong>Objetivo</strong>
-  <p>
-    Implementar, usando a linguagem Java, o jogo da senha.
-  </p>
-<strong>Jogo da senha</strong>
+	<strong>Objetivo</strong>
+	  <p>
+	    Implementar, usando a linguagem Java, o jogo da senha.
+	  </p>
+	<strong>Jogo da senha</strong>
   <p>
     Segundo a Wikipedia, o jogo da senha (Mastermind) foi criado por Mordechai Meirowitz. Consistia
     num jogo de tabuleiro em que uma senha de quatro dígitos representados por pinos coloridos (sendo
@@ -18,7 +18,7 @@ import java.util.Scanner;
     Para tanto, a cada tentativa, o desafiador informava ao desafiado quantos pinos estavam na posição
     correta e quantos faziam parte da senha mas estavam em posição equivocada.
   </p>
-<strong>Implementação</strong>
+	<strong>Implementação</strong>
   <p>
     Como será utilizada interface de texto, ao invés de cores serão usados números (de 1 a 6) para
     compor a senha de quatro dígitos.
@@ -37,7 +37,7 @@ import java.util.Scanner;
 */
 class App {
 	public static void main(String[] args) {
-	  int[] senha = new int[4];
+	  int[] senha = {3, 4, 1, 1};
 	  int[] tentativa = new int[4];
 	  Scanner scan = new Scanner(System.in);
 	  
@@ -106,11 +106,11 @@ class App {
 	  *
 	  * @return Bollean - Se um numero está contido no array
 	*/
-	public static boolean findNumberInArray(int number, int[] array) {
+	public static boolean findNumberInArray(int number, int j, int[] array) {
 	  boolean finded = false;
 	
 	  for(int i = 0; i < 4; i++) {
-	    if(array[i] == number) {
+	    if(array[i] == number && i == j) {
 	      finded = true;
 	      break;
 	    }
@@ -146,19 +146,27 @@ class App {
 	  * </ul>
 	*/
 	public static int getNumberOfDisplacedNumbers(int[] senha, int[] tentativa) {
-	  int numDeslocado = 0;
 	  int deslocados = 0;
 	  int[] numerosCorretos = getArrayOfCorrectNumbers(senha, tentativa);
+
+	  int[] copiaSenha = new int[4];
+	  int[] copiaTentativa = new int[4];
+	  for(int i = 0; i < 4; i++) {
+	  	copiaTentativa[i] = tentativa[i];
+	  	copiaSenha[i] = senha[i];
+	  }
+	  
 	  
 	  for(int i = 0; i < 4; i++) {
 	    for(int j = 0; j < 4; j++) {
-	      if(!findNumberInArray(tentativa[j], numerosCorretos)) {
-	        if(senha[i] == tentativa[j]) { 
+	      if(!findNumberInArray(copiaTentativa[j], j, numerosCorretos)) {
+	        if(copiaSenha[i] == copiaTentativa[j]) { 
 	          if(i != j) {
-	            if(numDeslocado != tentativa[j]) {
-	              deslocados++;
-	              numDeslocado = tentativa[j];
-	            }
+	          	deslocados++;
+	            copiaTentativa[j] = 0;
+	            copiaSenha[i] = 0;
+	            i = 0;
+	            j = 0;
 	          }
 	        } 
 	      }
@@ -177,10 +185,10 @@ class App {
 	}
 	
 	/**
-	* @param senha Int[] - Array da senha
-	* @param tentativa Int[] - Array da tentativa do usuario
-	*
-	* @return Int - Quantidade de números corretos
+		* @param senha Int[] - Array da senha
+		* @param tentativa Int[] - Array da tentativa do usuario
+		*
+		* @return Int - Quantidade de números corretos
 	*/
 	public static int getNumInPosCorrect(int[] senha, int[] tentativa) {
 	  int corretos = 0;
